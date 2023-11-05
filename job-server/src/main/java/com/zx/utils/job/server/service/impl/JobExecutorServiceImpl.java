@@ -62,7 +62,7 @@ public class JobExecutorServiceImpl implements JobExecutorService {
                         log.error("解析cron表达式出错， jobName：{}， CronExpression：{}", job.getJobName(), job.getCronExpression());
                         return false;
                     }
-                    log.info("job {} 激活成功，执行节点：{}", jobName, domain);
+                    log.info("任务激活成功，jobName：{}，执行节点：{}", jobName, domain);
                     return true;
                 } else {
                     log.error("任务激活失败, jobName：{}，domain：{}", jobName, domain);
