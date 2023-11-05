@@ -40,10 +40,10 @@ public class ServerInitialization implements ApplicationRunner {
     private JobRegistryService jobRegistryService;
 
     private static final ScheduledExecutorService ACTIVATE_TASK_EXECUTOR = new ScheduledThreadPoolExecutor(1,
-            new BasicThreadFactory.Builder().namingPattern("lightJobExecutor").build());
+            new BasicThreadFactory.Builder().namingPattern("jobActivator").build());
 
     private static final ScheduledExecutorService HEART_BEAT_EXECUTOR = new ScheduledThreadPoolExecutor(1,
-            new BasicThreadFactory.Builder().namingPattern("serverHeartBeatExecutor").build());
+            new BasicThreadFactory.Builder().namingPattern("HeartBeater").build());
 
     @Override
     public void run(ApplicationArguments args) {

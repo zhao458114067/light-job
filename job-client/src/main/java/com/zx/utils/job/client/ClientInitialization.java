@@ -28,7 +28,7 @@ public class ClientInitialization implements SmartInitializingSingleton {
     private JobRegistryService jobRegistryService;
 
     private static final ScheduledExecutorService JOB_REGISTRY_EXECUTOR = new ScheduledThreadPoolExecutor(1,
-            new BasicThreadFactory.Builder().namingPattern("jobRegistryExecutor").build());
+            new BasicThreadFactory.Builder().namingPattern("jobRegister").build());
 
     @Override
     public void afterSingletonsInstantiated() {
