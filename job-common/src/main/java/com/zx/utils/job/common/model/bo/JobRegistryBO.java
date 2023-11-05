@@ -10,7 +10,7 @@ import java.io.Serializable;
 
 /**
  * @author ZhaoXu
- * @date 2023/11/4 19:33
+ * @date 2022/3/4 19:33
  */
 @Data
 public class JobRegistryBO implements Serializable {

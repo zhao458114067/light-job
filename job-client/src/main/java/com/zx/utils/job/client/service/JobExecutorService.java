@@ -2,7 +2,7 @@ package com.zx.utils.job.client.service;
 
 /**
  * @author ZhaoXu
- * @date 2023/11/4 21:48
+ * @date 2022/3/4 21:48
  */
 public interface JobExecutorService {
     /**

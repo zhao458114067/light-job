@@ -4,7 +4,7 @@ import com.zx.utils.job.server.entity.JobEntity;
 
 /**
  * @author ZhaoXu
- * @date 2023/11/5 12:26
+ * @date 2022/3/5 12:26
  */
 public interface JobExecutorService {
     /**

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  * @author ZhaoXu
- * @date 2023/11/4 19:28
+ * @date 2022/3/4 19:28
  */
 @RequestClient("light.job.server.domain")
 public interface JobServerService {

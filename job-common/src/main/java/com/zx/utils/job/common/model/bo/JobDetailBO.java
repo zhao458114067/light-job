@@ -8,7 +8,7 @@ import java.lang.reflect.Method;
 
 /**
  * @author ZhaoXu
- * @date 2023/11/4 22:00
+ * @date 2022/3/4 22:00
  */
 @Data
 public class JobDetailBO implements Serializable {

@@ -11,7 +11,7 @@ import javax.persistence.LockModeType;
 
 /**
  * @author ZhaoXu
- * @date 2023/11/5 11:06
+ * @date 2022/3/5 11:06
  */
 public interface JobLockRepository extends BaseRepository<JobLockEntity, String> {
     /**

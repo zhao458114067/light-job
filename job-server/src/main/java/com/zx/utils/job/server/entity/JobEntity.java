@@ -18,7 +18,7 @@ import java.util.Date;
 
 /**
  * @author ZhaoXu
- * @date 2023/11/5 11:55
+ * @date 2022/3/5 11:55
  */
 @Entity
 @Table(name = "job_info")

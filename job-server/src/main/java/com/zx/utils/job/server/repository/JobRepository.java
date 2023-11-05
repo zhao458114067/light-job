@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @author ZhaoXu
- * @date 2023/11/5 11:06
+ * @date 2022/3/5 11:06
  */
 public interface JobRepository extends BaseRepository<JobEntity, Long> {
     /**

@@ -6,7 +6,7 @@ import lombok.Getter;
 
 /**
  * @author ZhaoXu
- * @date 2023/11/4 21:50
+ * @date 2022/3/4 21:50
  */
 @Getter
 public class JobExecutorException extends BaseException {

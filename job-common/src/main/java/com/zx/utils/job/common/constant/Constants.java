@@ -2,7 +2,7 @@ package com.zx.utils.job.common.constant;
 
 /**
  * @author ZhaoXu
- * @date 2023/11/5 14:30
+ * @date 2022/3/5 14:30
  */
 public interface Constants {
     /**

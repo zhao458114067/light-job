@@ -22,7 +22,7 @@ import java.util.Optional;
 
 /**
  * @author ZhaoXu
- * @date 2023/11/5 12:27
+ * @date 2022/3/5 12:27
  */
 @Service
 @Slf4j
@@ -58,12 +58,12 @@ public class JobExecutorServiceImpl implements JobExecutorService {
                         Long nextExecutionTime = CronUtils.calculateNextExecutionTime(job.getCronExpression());
                         job.setNextExecuteTime(nextExecutionTime);
                         jobRepository.save(job);
+                        log.info("任务激活成功，jobName：{}，执行节点：{}", jobName, domain);
+                        return true;
                     } catch (ParseException e) {
                         log.error("解析cron表达式出错， jobName：{}， CronExpression：{}", job.getJobName(), job.getCronExpression());
                         return false;
                     }
-                    log.info("任务激活成功，jobName：{}，执行节点：{}", jobName, domain);
-                    return true;
                 } else {
                     log.error("任务激活失败, jobName：{}，domain：{}", jobName, domain);
                 }
