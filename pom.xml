@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>cn.supzx.utils</groupId>
+        <artifactId>zx-common</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+    <artifactId>light-job</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>light-job</name>
+    <description>light-job</description>
+    <modules>
+        <module>job-server</module>
+        <module>job-client</module>
+        <module>job-common</module>
+    </modules>
+    <properties>
+        <java.version>1.8</java.version>
+        <zx-common.version>1.0-SNAPSHOT</zx-common.version>
+        <mysql.version>5.1.49</mysql.version>
+        <swagger-annotaion.version>1.5.20</swagger-annotaion.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>cn.supzx.utils</groupId>
+                <artifactId>common-base</artifactId>
+                <version>${zx-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.supzx.utils</groupId>
+                <artifactId>common-rpc</artifactId>
+                <version>${zx-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.supzx.utils</groupId>
+                <artifactId>common-repository</artifactId>
+                <version>${zx-common.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${springfox-swagger2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.swagger</groupId>
+                <artifactId>swagger-annotations</artifactId>
+                <version>${swagger-annotaion.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <scm>
+        <connection>scm:git:https://github.com/zhao458114067/repository-util.git</connection>
+        <url>git:https://github.com/zhao458114067/repository-util</url>
+    </scm>
+    <developers>
+        <developer>
+            <name>ZhaoXu</name>
+            <email>458114067@qq.com</email>
+            <roles>
+                <role>Developer</role>
+            </roles>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+    <distributionManagement>
+        <repository>
+            <id>ossrh</id>
+            <name>Sonatype Nexus Snapshots</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <name>Nexus Release Repository</name>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+</project>
