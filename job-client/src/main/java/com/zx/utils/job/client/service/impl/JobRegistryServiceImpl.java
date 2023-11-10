@@ -1,6 +1,5 @@
 package com.zx.utils.job.client.service.impl;
 
-import com.zx.common.base.utils.RetryMonitor;
 import com.zx.utils.job.client.annotation.LightJob;
 import com.zx.utils.job.client.request.JobServerService;
 import com.zx.utils.job.client.service.JobRegistryService;
@@ -50,7 +49,7 @@ public class JobRegistryServiceImpl implements JobRegistryService {
     }
 
     @Override
-    public void registryLightJob(String beanDefinitionName, Method method, LightJob lightJob) {
+    public void registryLightJob(String appName, String beanDefinitionName, Method method, LightJob lightJob) {
         String jobName = lightJob.value();
         JobDetailBO jobDetailBO = new JobDetailBO();
         jobDetailBO.setJobName(jobName);
@@ -60,6 +59,7 @@ public class JobRegistryServiceImpl implements JobRegistryService {
         addJob(jobDetailBO);
         JobRegistryBO jobRegistryBO = new JobRegistryBO();
         jobRegistryBO.setJobName(jobName);
+        jobRegistryBO.setGroupName(appName);
         jobRegistryBO.setPort(port);
 
         try {

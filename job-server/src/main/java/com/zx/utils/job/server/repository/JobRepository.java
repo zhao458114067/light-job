@@ -2,7 +2,11 @@ package com.zx.utils.job.server.repository;
 
 import com.zx.common.repository.BaseRepository;
 import com.zx.utils.job.server.entity.JobEntity;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import javax.persistence.LockModeType;
 import java.util.List;
 
 /**
@@ -19,4 +23,14 @@ public interface JobRepository extends BaseRepository<JobEntity, Long> {
      * @return
      */
     List<JobEntity> queryByNextExecuteTimeBeforeAndStatusAndValid(Long time, Integer status, Integer valid);
+
+    /**
+     * 通过jobName加排他锁
+     *
+     * @param jobName
+     * @return
+     */
+    @Lock(value = LockModeType.PESSIMISTIC_WRITE)
+    @Query(value = "select je.jobName from JobEntity je where je.jobName = :jobName")
+    String lockByJobName(@Param("jobName") String jobName);
 }

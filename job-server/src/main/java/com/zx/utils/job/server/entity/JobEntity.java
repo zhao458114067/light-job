@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 /**
@@ -29,7 +30,6 @@ public class JobEntity {
      * id
      */
     @Id
-    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -37,6 +37,11 @@ public class JobEntity {
      * job名称
      */
     private String jobName;
+
+    /**
+     * 组名称
+     */
+    private String groupName;
 
     /**
      * cron表达式
@@ -64,15 +69,12 @@ public class JobEntity {
     private Long nextExecuteTime;
 
     @CreatedDate
-    @Column(name = "gmt_create", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date gmtCreate;
 
     @LastModifiedDate
-    @Column(name = "gmt_modified", insertable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date gmtModified;
 
-    @Column(name = "valid", columnDefinition = "integer")
     private Integer valid;
 }

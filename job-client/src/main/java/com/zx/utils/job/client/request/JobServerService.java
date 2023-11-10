@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
  * @author ZhaoXu
  * @date 2022/3/4 19:28
  */
-@RequestClient("light.job.server.domain")
+@RequestClient(domainEnvironment = "light.job.server.domain")
 public interface JobServerService {
     /**
      * 向服务注册job

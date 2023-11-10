@@ -5,7 +5,6 @@ import com.zx.common.base.utils.DateUtils;
 import com.zx.common.base.utils.HttpClientUtil;
 import com.zx.utils.job.common.constant.Constants;
 import com.zx.utils.job.server.entity.JobEntity;
-import com.zx.utils.job.server.repository.JobLockRepository;
 import com.zx.utils.job.server.repository.JobRepository;
 import com.zx.utils.job.server.service.JobExecutorService;
 import com.zx.utils.job.server.service.JobRegistryService;
@@ -31,16 +30,13 @@ public class JobExecutorServiceImpl implements JobExecutorService {
     private JobRepository jobRepository;
 
     @Autowired
-    private JobLockRepository jobLockRepository;
-
-    @Autowired
     private JobRegistryService jobRegistryService;
 
     @Override
     @Transactional(rollbackFor = Throwable.class)
     public boolean activateJob(JobEntity job) {
         String jobName = job.getJobName();
-        String lockKey = jobLockRepository.lockByJobId(jobName);
+        jobRepository.lockByJobName(jobName);
         Optional<JobEntity> byId = jobRepository.findById(job.getId());
         if (byId.isPresent()) {
             job = byId.get();

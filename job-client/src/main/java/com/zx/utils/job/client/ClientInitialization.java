@@ -7,6 +7,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.MethodIntrospector;
 import org.springframework.core.annotation.AnnotatedElementUtils;
@@ -27,6 +28,9 @@ public class ClientInitialization implements SmartInitializingSingleton {
     @Autowired
     private JobRegistryService jobRegistryService;
 
+    @Value("${spring.application.name}")
+    String appName;
+
     private static final ScheduledExecutorService JOB_REGISTRY_EXECUTOR = new ScheduledThreadPoolExecutor(1,
             new BasicThreadFactory.Builder().namingPattern("jobRegister").build());
 
@@ -42,7 +46,7 @@ public class ClientInitialization implements SmartInitializingSingleton {
                             (MethodIntrospector.MetadataLookup<LightJob>) method -> AnnotatedElementUtils.findMergedAnnotation(method, LightJob.class));
                     if (ObjectUtils.isNotEmpty(method2LightJobMap)) {
                         method2LightJobMap.forEach((method, lightJob) -> {
-                            jobRegistryService.registryLightJob(beanDefinitionName, method, lightJob);
+                            jobRegistryService.registryLightJob(appName, beanDefinitionName, method, lightJob);
                         });
                     }
                 }

@@ -1,8 +1,8 @@
 package com.zx.utils.job.server.service.impl;
 
 import com.zx.utils.job.common.model.bo.JobRegistryBO;
-import com.zx.utils.job.server.entity.JobLockEntity;
-import com.zx.utils.job.server.repository.JobLockRepository;
+import com.zx.utils.job.server.entity.JobEntity;
+import com.zx.utils.job.server.repository.JobRepository;
 import com.zx.utils.job.server.service.JobRegistryService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -25,20 +26,30 @@ import java.util.stream.Collectors;
 @Service
 @Slf4j
 public class JobRegistryServiceImpl implements JobRegistryService {
-    @Autowired
-    private JobLockRepository jobLockRepository;
 
+    @Autowired
+    private JobRepository jobRepository;
+
+    /**
+     * 任务名称对应域名列表
+     */
     private static final Map<String, List<String>> JOB_NAME_2_DOMAINS = new ConcurrentSkipListMap<>();
 
+    /**
+     * 任务名称对应负载均衡自增数字
+     */
     private static final Map<String, AtomicInteger> JOB_NAME_2_LOAD_BALANCE = new ConcurrentSkipListMap<>();
 
     @Override
     @Transactional(rollbackFor = Throwable.class)
     public void registry(JobRegistryBO jobRegistryBO, String domain) {
+        // 任务管理表
         String jobName = jobRegistryBO.getJobName();
-        JobLockEntity jobLockEntity = new JobLockEntity();
-        jobLockEntity.setJobName(jobName);
-        jobLockRepository.save(jobLockEntity);
+        JobEntity jobEntity = new JobEntity();
+        jobEntity.setJobName(jobName);
+        jobEntity.setGroupName(Optional.ofNullable(jobRegistryBO.getGroupName()).orElse("default"));
+        jobRepository.save(jobEntity);
+
         List<String> domainList = JOB_NAME_2_DOMAINS.computeIfAbsent(jobName, (k) -> new CopyOnWriteArrayList<>());
         if (!domainList.contains(domain)) {
             domainList.add(domain);

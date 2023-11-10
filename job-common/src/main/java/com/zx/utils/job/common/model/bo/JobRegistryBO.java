@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -19,9 +20,17 @@ public class JobRegistryBO implements Serializable {
     /**
      * job名称
      */
-    @NotEmpty
+    @NotBlank
     private String jobName;
 
+    /**
+     * 组名称
+     */
+    private String groupName;
+
+    /**
+     * 客户端端口
+     */
     @NotNull
     private Integer port;
 }
