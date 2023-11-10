@@ -41,4 +41,7 @@ public class JobBO implements Serializable {
 
     @ApiModelProperty("任务执行参数")
     private String params;
+
+    @ApiModelProperty("分片数量")
+    private Integer partitionCount;
 }

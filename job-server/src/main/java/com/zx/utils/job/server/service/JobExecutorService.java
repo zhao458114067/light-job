@@ -9,5 +9,5 @@ public interface JobExecutorService {
      * 激活某个任务
      * @param job
      */
-    boolean activateJob(Long job);
+    void activateJob(Long job);
 }

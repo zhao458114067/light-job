@@ -64,6 +64,11 @@ public class JobEntity {
      */
     private String params;
 
+    /**
+     * 分片数量
+     */
+    private Integer partitionCount;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

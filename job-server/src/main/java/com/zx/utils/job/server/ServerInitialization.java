@@ -75,20 +75,7 @@ public class ServerInitialization implements ApplicationRunner {
             if (ObjectUtils.isNotEmpty(jobList)) {
                 for (JobEntity jobEntity : jobList) {
                     Long jobId = jobEntity.getId();
-                    boolean needRetry = false;
-                    Integer failRetryCount = Optional.ofNullable(jobEntity.getFailRetryCount()).orElse(0);
-                    try {
-                        boolean result = jobExecutorService.activateJob(jobId);
-                        needRetry = !result && failRetryCount > 0;
-                    } catch (Exception e) {
-                        needRetry = failRetryCount > 0;
-                        log.error("任务调度发生异常，jobEntity：{}", JsonUtils.toJson(jobEntity), e);
-                    }
-                    if (needRetry) {
-                        RetryMonitor.registry(() -> {
-                            jobExecutorService.activateJob(jobId);
-                        }, failRetryCount);
-                    }
+                    jobExecutorService.activateJob(jobId);
                 }
             }
         }, 5, 1, TimeUnit.SECONDS);
