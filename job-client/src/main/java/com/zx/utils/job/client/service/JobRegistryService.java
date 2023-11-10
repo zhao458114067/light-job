@@ -29,10 +29,6 @@ public interface JobRegistryService {
     /**
      * 注册job
      *
-     * @param appName
-     * @param beanDefinitionName
-     * @param method
-     * @param lightJob
      */
-    void registryLightJob(String appName, String beanDefinitionName, Method method, LightJob lightJob);
+    void registryLightJob();
 }

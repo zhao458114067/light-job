@@ -25,12 +25,21 @@ public interface JobRepository extends BaseRepository<JobEntity, Long> {
     List<JobEntity> queryByNextExecuteTimeBeforeAndStatusAndValid(Long time, Integer status, Integer valid);
 
     /**
-     * 通过jobName加排他锁
+     * 通过job名称与组名称查询
      *
      * @param jobName
+     * @param groupName
+     * @return
+     */
+    List<JobEntity> queryByJobNameAndGroupName(String jobName, String groupName);
+
+    /**
+     * 通过jobId加排他锁
+     *
+     * @param id
      * @return
      */
     @Lock(value = LockModeType.PESSIMISTIC_WRITE)
-    @Query(value = "select je.jobName from JobEntity je where je.jobName = :jobName")
-    String lockByJobName(@Param("jobName") String jobName);
+    @Query(value = "from JobEntity je where je.id = :id")
+    JobEntity lockJob(@Param("id") Long id);
 }

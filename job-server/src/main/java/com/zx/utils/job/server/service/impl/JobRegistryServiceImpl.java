@@ -11,9 +11,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 import java.util.concurrent.ConcurrentSkipListMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -43,17 +45,23 @@ public class JobRegistryServiceImpl implements JobRegistryService {
     @Override
     @Transactional(rollbackFor = Throwable.class)
     public void registry(JobRegistryBO jobRegistryBO, String domain) {
-        // 任务管理表
-        String jobName = jobRegistryBO.getJobName();
-        JobEntity jobEntity = new JobEntity();
-        jobEntity.setJobName(jobName);
-        jobEntity.setGroupName(Optional.ofNullable(jobRegistryBO.getGroupName()).orElse("default"));
-        jobRepository.save(jobEntity);
+        List<String> jobNameList = jobRegistryBO.getJobNameList();
+        String groupName = jobRegistryBO.getGroupName();
+        Optional.ofNullable(jobNameList).orElse(Collections.emptyList()).forEach(jobName -> {
+            List<JobEntity> jobEntities = jobRepository.queryByJobNameAndGroupName(jobName, groupName);
+            if (ObjectUtils.isEmpty(jobEntities)) {
+                JobEntity jobEntity = new JobEntity();
+                jobEntity.setValid(0);
+                jobEntity.setJobName(jobName);
+                jobEntity.setGroupName(groupName);
+                jobRepository.save(jobEntity);
+            }
 
-        List<String> domainList = JOB_NAME_2_DOMAINS.computeIfAbsent(jobName, (k) -> new CopyOnWriteArrayList<>());
-        if (!domainList.contains(domain)) {
-            domainList.add(domain);
-        }
+            List<String> domainList = JOB_NAME_2_DOMAINS.computeIfAbsent(jobName, (k) -> new CopyOnWriteArrayList<>());
+            if (!domainList.contains(domain)) {
+                domainList.add(domain);
+            }
+        });
     }
 
     @Override
@@ -63,7 +71,7 @@ public class JobRegistryServiceImpl implements JobRegistryService {
             log.warn("任务jobName：{} 可用节点为空！", jobName);
             return null;
         }
-        int loadBalanceIndex = JOB_NAME_2_LOAD_BALANCE.computeIfAbsent(jobName, (k) -> new AtomicInteger(0)).incrementAndGet();
+        int loadBalanceIndex = JOB_NAME_2_LOAD_BALANCE.computeIfAbsent(jobName, (k) -> new AtomicInteger(Math.abs(new Random().nextInt()))).incrementAndGet();
         int domainIndex = loadBalanceIndex % domainList.size();
         return domainList.get(domainIndex);
     }

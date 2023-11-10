@@ -1,10 +1,11 @@
 package com.zx.utils.job.client.controller;
 
 import com.zx.utils.job.client.service.JobExecutorService;
+import com.zx.utils.job.common.model.bo.ActivateJobBO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,11 +22,11 @@ public class JobController {
     /**
      * 激活某个任务
      *
-     * @param jobName
+     * @param activateJobBO
      */
-    @PostMapping("/activate/{jobName}")
-    public void activate(@PathVariable String jobName) {
-        jobExecutorService.activate(jobName);
+    @PostMapping("/activate")
+    public void activate(@RequestBody ActivateJobBO activateJobBO) {
+        jobExecutorService.activate(activateJobBO);
     }
 
     @GetMapping("/client/beat")

@@ -16,18 +16,21 @@ import java.io.Serializable;
 public class JobBO implements Serializable {
     private static final long serialVersionUID = -7277210471015365467L;
 
+    @ApiModelProperty("为空时新增，不为空时更新")
     private Long id;
 
-    @NotEmpty
-    @ApiModelProperty("job名称")
+    @ApiModelProperty("任务名称")
     private String jobName;
+
+    @ApiModelProperty("组名称")
+    private String groupName;
+
+    @ApiModelProperty("描述")
+    private String jobDesc;
 
     @NotBlank
     @ApiModelProperty("cron表达式")
     private String cronExpression;
-
-    @ApiModelProperty("描述")
-    private String jobDesc;
 
     @ApiModelProperty("状态 0-未启用 1-已启用")
     private Integer status;
@@ -35,4 +38,7 @@ public class JobBO implements Serializable {
     @ApiModelProperty("失败重试次数")
     @Max(3)
     private Integer failRetryCount;
+
+    @ApiModelProperty("任务执行参数")
+    private String params;
 }

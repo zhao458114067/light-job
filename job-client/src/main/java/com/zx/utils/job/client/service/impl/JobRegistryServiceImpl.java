@@ -1,5 +1,6 @@
 package com.zx.utils.job.client.service.impl;
 
+import com.zx.common.base.utils.JsonUtils;
 import com.zx.utils.job.client.annotation.LightJob;
 import com.zx.utils.job.client.request.JobServerService;
 import com.zx.utils.job.client.service.JobRegistryService;
@@ -12,8 +13,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 /**
  * @author ZhaoXu
@@ -27,7 +30,10 @@ public class JobRegistryServiceImpl implements JobRegistryService {
     @Autowired
     private JobServerService jobServerService;
 
-    @Value("${server.port}")
+    @Value("${spring.application.name:#{'default'}}")
+    String appName;
+
+    @Value("${server.port:#{8080}}")
     Integer port;
 
     @Override
@@ -49,24 +55,21 @@ public class JobRegistryServiceImpl implements JobRegistryService {
     }
 
     @Override
-    public void registryLightJob(String appName, String beanDefinitionName, Method method, LightJob lightJob) {
-        String jobName = lightJob.value();
-        JobDetailBO jobDetailBO = new JobDetailBO();
-        jobDetailBO.setJobName(jobName);
-        jobDetailBO.setBeanName(beanDefinitionName);
-        jobDetailBO.setTargetMethod(method);
-        // 注册本地job路由
-        addJob(jobDetailBO);
-        JobRegistryBO jobRegistryBO = new JobRegistryBO();
-        jobRegistryBO.setJobName(jobName);
-        jobRegistryBO.setGroupName(appName);
-        jobRegistryBO.setPort(port);
+    public void registryLightJob() {
+        List<String> jobNameList = JOB_NAME2_METHOD_MAP.values().stream()
+                .map(JobDetailBO::getJobName)
+                .distinct()
+                .collect(Collectors.toList());
 
+        JobRegistryBO jobRegistryBO = new JobRegistryBO()
+                .setGroupName(appName)
+                .setPort(port)
+                .setJobNameList(jobNameList);
         try {
             // server注册
             jobServerService.registryJob(jobRegistryBO);
         } catch (Exception e) {
-            log.warn("Job 注册异常，请检查，beanDefinitionName：{}，jobName：{}，", beanDefinitionName, jobName);
+            log.warn("Job 注册异常，请检查，jobRegistryBO：{}", JsonUtils.toJson(jobRegistryBO));
         }
     }
 }

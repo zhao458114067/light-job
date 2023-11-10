@@ -4,6 +4,7 @@ import com.zx.common.base.utils.SpringManager;
 import com.zx.utils.job.client.exception.JobExecutorException;
 import com.zx.utils.job.client.service.JobExecutorService;
 import com.zx.utils.job.client.service.JobRegistryService;
+import com.zx.utils.job.common.model.bo.ActivateJobBO;
 import com.zx.utils.job.common.model.bo.JobDetailBO;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 
 /**
  * @author ZhaoXu
@@ -24,7 +26,8 @@ public class JobExecutorServiceImpl implements JobExecutorService {
     private JobRegistryService jobRegistryService;
 
     @Override
-    public void activate(String jobName) {
+    public void activate(ActivateJobBO activateJobBO) {
+        String jobName = activateJobBO.getJobName();
         JobDetailBO jobDetailBO = jobRegistryService.getJob(jobName);
         if (ObjectUtils.isEmpty(jobDetailBO)) {
             throw new JobExecutorException("job不存在");
@@ -33,7 +36,13 @@ public class JobExecutorServiceImpl implements JobExecutorService {
         Object bean = SpringManager.getBean(beanName);
         Method targetMethod = jobDetailBO.getTargetMethod();
         try {
-            targetMethod.invoke(bean);
+            Parameter[] parameters = targetMethod.getParameters();
+            if (ObjectUtils.isNotEmpty(parameters)) {
+                String params = activateJobBO.getParams();
+                targetMethod.invoke(bean, params);
+            } else {
+                targetMethod.invoke(bean);
+            }
         } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }

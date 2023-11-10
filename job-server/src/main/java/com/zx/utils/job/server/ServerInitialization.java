@@ -74,10 +74,11 @@ public class ServerInitialization implements ApplicationRunner {
             List<JobEntity> jobList = jobRepository.queryByNextExecuteTimeBeforeAndStatusAndValid(nowTime, 1, 1);
             if (ObjectUtils.isNotEmpty(jobList)) {
                 for (JobEntity jobEntity : jobList) {
+                    Long jobId = jobEntity.getId();
                     boolean needRetry = false;
                     Integer failRetryCount = Optional.ofNullable(jobEntity.getFailRetryCount()).orElse(0);
                     try {
-                        boolean result = jobExecutorService.activateJob(jobEntity);
+                        boolean result = jobExecutorService.activateJob(jobId);
                         needRetry = !result && failRetryCount > 0;
                     } catch (Exception e) {
                         needRetry = failRetryCount > 0;
@@ -85,7 +86,7 @@ public class ServerInitialization implements ApplicationRunner {
                     }
                     if (needRetry) {
                         RetryMonitor.registry(() -> {
-                            jobExecutorService.activateJob(jobEntity);
+                            jobExecutorService.activateJob(jobId);
                         }, failRetryCount);
                     }
                 }

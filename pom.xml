@@ -29,12 +29,12 @@
             <dependency>
                 <groupId>cn.supzx.utils</groupId>
                 <artifactId>common-base</artifactId>
-                <version>1.0.3</version>
+                <version>${zx-common.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.supzx.utils</groupId>
                 <artifactId>common-rpc</artifactId>
-                <version>1.0.4</version>
+                <version>${zx-common.version}</version>
             </dependency>
             <dependency>
                 <groupId>cn.supzx.utils</groupId>
@@ -70,6 +70,20 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

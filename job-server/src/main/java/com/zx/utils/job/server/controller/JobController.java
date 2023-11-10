@@ -8,6 +8,7 @@ import com.zx.utils.job.server.service.JobManagerService;
 import com.zx.utils.job.server.service.JobRegistryService;
 import com.zx.utils.job.server.util.IpAddressUtils;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author ZhaoXu
@@ -40,17 +42,9 @@ public class JobController extends BaseControllerModel<JobBO, JobEntity> {
 
     @Override
     @PostMapping("/job")
-    @ApiOperation(value = "新增", notes = "")
+    @ApiOperation(value = "保存", notes = "")
     @Transactional(rollbackFor = {Exception.class})
     public void add(@RequestBody JobBO jobBO) {
-        jobManagerService.save(jobBO);
-    }
-
-    @Override
-    @PutMapping("/job")
-    @ApiOperation(value = "更新", notes = "必须传数据库id值")
-    @Transactional(rollbackFor = {Exception.class})
-    public void update(@RequestBody JobBO jobBO) {
         jobManagerService.save(jobBO);
     }
 }

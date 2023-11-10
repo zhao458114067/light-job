@@ -5,7 +5,6 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
@@ -14,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 /**
@@ -27,31 +25,24 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class JobEntity {
     /**
-     * id
-     */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    /**
-     * job名称
-     */
-    private String jobName;
-
-    /**
      * 组名称
      */
     private String groupName;
 
     /**
-     * cron表达式
+     * 任务名称
      */
-    private String cronExpression;
+    private String jobName;
 
     /**
      * 描述
      */
     private String jobDesc;
+
+    /**
+     * cron表达式
+     */
+    private String cronExpression;
 
     /**
      * 状态 0-未启用 1-已启用
@@ -67,6 +58,15 @@ public class JobEntity {
      * 下次执行时间戳
      */
     private Long nextExecuteTime;
+
+    /**
+     * 任务执行参数
+     */
+    private String params;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
